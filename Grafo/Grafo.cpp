@@ -41,21 +41,25 @@ void Grafo::imprimirListaAdjacencia() {
 }
 
 // Gera uma imagem do grafo em formato PNG usando Graphviz.
+//Declara o método gerarImagem que pertence à classe Grafo.
+//Recebe um parâmetro filename do tipo std::string, que é o nome do arquivo onde o grafo será salvo.
 void Grafo::gerarImagem(const std::string &filename) {
-    std::ofstream arquivo(filename);  // Cria e abre um arquivo para escrita
-    arquivo << "graph G {\n";  // Escreve o início da definição do grafo
-    for (int i = 0; i < V; ++i) {  // Para cada vértice
-        for (int vizinho : listaAdjacencia[i]) {  // Para cada vizinho
-            if (i + 1 < vizinho) {  // Para evitar duplicação de arestas
-                arquivo << "  " << i + 1 << " -- " << vizinho << ";\n";  // Escreve a aresta no arquivo
+    std::ofstream arquivo(filename);  // Cria e abre um arquivo para escrita.Cria um objeto std::ofstream chamado arquivo e abre um arquivo para escrita com o nome fornecido em filename. Se o arquivo não existir, ele será criado; se já existir, será sobrescrito.
+    arquivo << "graph G {\n";  // Escreve o início da definição do grafo. Escreve a linha graph G { no arquivo, que inicia a definição do grafo em formato Graphviz, graph indica um grafo não-direcionado, e G é o nome do grafo.
+    for (int i = 0; i < V; ++i) {  // Para cada vértice i, percorre sua lista de adjacência para acessar todos os vértices vizinhos.
+        for (int vizinho : listaAdjacencia[i]) {  // Para cada vizinho 
+            if (i + 1 < vizinho) {  // Verifica se o índice do vértice atual i + 1 é menor que o índice do vértice vizinho. 
+            //Isso previne a escrita de arestas duplicadas no arquivo, já que em um grafo não-direcionado, uma aresta entre i e vizinho é a mesma que uma aresta entre vizinho e i.
+                arquivo << "  " << i + 1 << " -- " << vizinho << ";\n";  // Escreve uma linha no arquivo definindo uma aresta entre o vértice i + 1 e vizinho no formato Graphviz. A linha tem a forma i + 1 -- vizinho;.
             }
         }
     }
     arquivo << "}\n";  // Escreve o fim da definição do grafo
-    arquivo.close();  // Fecha o arquivo
+    arquivo.close();  // Fecha o arquivo, garantindo que todos os dados sejam gravados corretamente e que os recursos sejam liberados.
 
     // Comando para gerar a imagem PNG do grafo usando o Graphviz
     std::string comando = "dot -Tpng " + filename + " -o grafo.png";
     system(comando.c_str());  // Executa o comando
+    
 }
 
